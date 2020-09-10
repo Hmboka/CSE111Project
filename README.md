@@ -1,2 +1,2 @@
 # CSE111Project
-We will be creating an book reading application
+We will be creating a book reading application that utilizes a GoodReads database from Kaggle.
