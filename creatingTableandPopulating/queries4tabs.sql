@@ -1,3 +1,5 @@
+-------## QUERIES TO POPULATE TABLE ##---------
+/* 
 select distinct b1.authors as a_authors, avg(b1.average_rating) as a_authrating
 from book b1, book b2
 where b1.authors = b2.authors
@@ -24,47 +26,19 @@ select authors as ad_name, bookID as ad_bookID
 from book;
 -- creates authored table
 
-delete
-from hasread;
+select a_name as hr_name, b_bookID as hr_bookID, a_authrating as hr_myrating
+from authors, book, authored
+where ad_name = a_name AND
+      ad_bookID = b_bookID;
 --has read table
-delete
-from faveauthors;
-
---fave authors table
 
 
+
+select a_authors as fa_name, a_authrating as fa_myrating
+from authors;
 --favebooks table
-
---STARTING HERE---
-
-
---add books to has read table
+*/
 
 
 
---delete books from hasread table
-
-
---add books to authored
-
-
---delete books from authored
-
-
---add books to faveBooks
---INSERT INTO favBooks
-
---remove books from favebooks
-
-
---add books to faveauthors
-
-
---remove books from faveauthors
-
-
---update books tables by changing author(s)
-
-
---update book name in books
 
