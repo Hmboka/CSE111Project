@@ -128,8 +128,8 @@ WHERE hr_bookID IN(SELECT p_bookID
 --------------   19   --------------
 --update favbook rating
 UPDATE favebooks
-SET fa_myrating = '5.0'
-WHERE fa_name = 'Harry Potter and the Half-Blood Prince (Harry Potter  #6)';
+SET fb_myrating = '5.0'
+WHERE fb_title = 'Harry Potter and the Half-Blood Prince (Harry Potter  #6)';
 
 
 --------------   20   --------------
