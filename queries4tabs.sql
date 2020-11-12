@@ -18,11 +18,11 @@ from book;
 
 select publisher as p_name, bookID as p_bookID, authors as p_authname, publication_date as p_date
 from book;
---publisher table
+--creates publisher table
 
 select authors as ad_name, bookID as ad_bookID
 from book;
---authored table
+-- creates authored table
 
 delete
 from hasread;
@@ -34,4 +34,37 @@ from faveauthors;
 
 
 --favebooks table
+
+--STARTING HERE---
+
+
+--add books to has read table
+
+
+
+--delete books from hasread table
+
+
+--add books to authored
+
+
+--delete books from authored
+
+
+--add books to faveBooks
+--INSERT INTO favBooks
+
+--remove books from favebooks
+
+
+--add books to faveauthors
+
+
+--remove books from faveauthors
+
+
+--update books tables by changing author(s)
+
+
+--update book name in books
 
