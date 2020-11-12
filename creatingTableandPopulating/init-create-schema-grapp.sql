@@ -1,9 +1,9 @@
 create table books (
     b_bookID decimal(13,0) not null,
     b_title varchar(250) not null,
-    b_languagecode char(10) not null,
+    b_langcode char(10) not null,
     b_numpages decimal(8,0),
-    b_isbn decimal(11,0) not null,
+    b_isbn decimal(11,0)
 );
 
 
@@ -12,8 +12,9 @@ create table authored (
     ad_bookID decimal(13,0)
 );
 
+
 create table authors (
-    a_authors char(40) not null,
+    a_name char(40) not null,
     a_authrating decimal(3,2) not null
 );
 
