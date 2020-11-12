@@ -40,7 +40,8 @@ create table faveauthors (
 create table hasread (
     hr_name char(40) not null,
     hr_bookID decimal(13,0),
-    hr_myrating decimal(3,2)
+    hr_myrating decimal(3,2),
+    hr_date date
 );
 
 create table favebooks (

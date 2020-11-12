@@ -42,7 +42,3 @@ from authors;
 
 
 
---STARTING HERE---
-
-
-
