@@ -153,3 +153,39 @@ where fa_myrating =  (select max(famr) from (select avg(fa_myrating) as famr
                                             ) as helper)
 group by fa_name;
 
+
+--------------   22   -------------- (uses 3 tables)
+--find books in the has read that was published after 2000 and has a rating of at least 3
+SELECT hr_name
+FROM hasread
+WHERE hr_bookID IN(SELECT p_date
+                  FROM publisher
+                  WHERE p_date >= '2000-01-01' AND p_bookID IN(SELECT r_bookID 
+                                                              FROM rating
+                                                              WHERE r_avgbookrating >= 3));
+
+
+--------------   23   -------------- (uses 3 tables)
+--find authors of books that were published by scholastic inc with a rating of at least 3
+SELECT ad_name
+FROM authored
+WHERE ad_bookID IN(SELECT p_bookID
+                  FROM publisher
+                  WHERE p_name = 'Scholastic' AND p_bookID IN(SELECT r_bookID 
+                                                              FROM rating
+                                                              WHERE r_avgbookrating >= 3))
+
+GROUP BY ad_name;
+
+--------------   24   -------------- (uses 4 tables)
+--find books with rating of at least 4 that where published by William Morrow Paperbacks and the authors had rating of at least 3
+SELECT r_title
+FROM rating
+WHERE r_avgbookrating >= 4 AND  r_bookID IN(SELECT p_bookID
+                                         FROM publisher
+                                         WHERE p_name = 'William Morrow Paperbacks' AND p_bookID IN(SELECT ad_bookID 
+                                                                                                  FROM authored
+                                                                                                  WHERE ad_name IN(SELECT a_name
+                                                                                                                  FROM authors
+                                                                                                                  WHERE a_authrating >=3)));
+
