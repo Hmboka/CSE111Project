@@ -188,4 +188,38 @@ WHERE r_avgbookrating >= 4 AND  r_bookID IN(SELECT p_bookID
                                                                                                   WHERE ad_name IN(SELECT a_name
                                                                                                                   FROM authors
                                                                                                                   WHERE a_authrating >=3)));
+--Find authors with an overall average book rating of 3.0 and above who youve read in the year 2020, in descending order of ratings
 
+select a_name as authorName, avg(r_avgbookrating) as bookRatings, hr_date as readDate
+from authors, authored, rating, hasread
+where a_name = ad_name AND
+      ad_bookID = r_bookID AND
+      r_bookID = hr_bookID AND
+      hr_date like '%2020%'
+group by a_name
+having bookRatings >= 3.0
+order by bookRatings DESC;
+
+--Find books which have a popular rating of 4.0 and above, but you have personally rated it below 2.5, in increasing order of your rating
+select b_title as book_title, r_avgbookrating as popular_rating, hr_myrating as my_rating
+from books, rating, hasread
+where b_bookID = r_bookID AND
+      r_bookID = hr_bookID
+group by b_title
+having my_rating < 2.5 and r_avgbookrating >= 4.0
+order by my_rating asc;
+
+--Find authors who have written one of your favorite books, though youve rated one of their other books below 2.5. 
+--Display the author, favorite book title , the book's popular rating,  and book's publisher
+select distinct ad_name, b_title, r_avgbookrating, p_name
+from favebooks, authored, rating, publisher, books
+where 
+      ad_bookID = fb_bookID AND
+      ad_name in (select hr_name
+                    from hasread
+                    group by hr_name
+                    having hr_myrating < 2.5) AND
+      
+      ad_bookID = b_bookID AND
+      b_bookID = p_bookID AND
+      p_bookID = r_bookID;
