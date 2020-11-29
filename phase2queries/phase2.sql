@@ -39,6 +39,12 @@ where b_bookID = 1;
 select b_title
 from books;
 
+            --------------   6   --------------
+            --let user search for books by searching title
+            select *
+            from books
+            where b_title = "Bill Bryson's African Diary";
+
 
 --------------   7   --------------
 --insert into fav author 
