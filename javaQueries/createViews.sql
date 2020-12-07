@@ -20,4 +20,4 @@ where ad_name in (select hr_name
                     having hr_myrating < 2.5);
 
 
-DROP VIEW fb_auth_pub_rating;
+-- DROP VIEW fb_auth_pub_rating;

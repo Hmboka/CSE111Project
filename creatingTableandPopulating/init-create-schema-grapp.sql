@@ -1,26 +1,26 @@
 create table books (
-    b_bookID decimal(13,0) PRIMARY KEY,
+    b_bookID INTEGER IDENTITY(1,1) PRIMARY KEY,
     b_title varchar(250) not null,
     b_langcode char(10) not null,
     b_numpages decimal(8,0),
-    b_isbn decimal(11,0)
+    b_isbn char(13,0)
 );
 
 
 create table authored (
     ad_name char(40) REFERENCES authors(a_name) ON UPDATE CASCADE ON DELETE CASCADE,
-    ad_bookID decimal(13,0) REFERENCES books(b_bookID) ON UPDATE CASCADE ON DELETE CASCADE
+    ad_bookID decimal(13,0) PRIMARY KEY
 );
 
 
 create table authors (
     a_name char(40) PRIMARY KEY,
-    a_authrating decimal(3,2) not null
+    a_authrating decimal(3,2)
 );
 
 create table publisher (
     p_name char(40) not null,
-    p_bookID varchar(250) REFERENCES books(b_bookID) ON UPDATE CASCADE ON DELETE CASCADE,
+    p_bookID decimal(13,0) REFERENCES books(b_bookID) ON UPDATE CASCADE ON DELETE CASCADE,
     p_authname char(40)  REFERENCES authors(a_name) ON UPDATE CASCADE ON DELETE CASCADE,
     p_date date
 );

@@ -56,7 +56,7 @@ WHERE b_bookID = 22;
     --------------   9   --------------
     --sample to show the next query 
                     INSERT INTO hasread (hr_bookID, hr_name, hr_myrating)
-                    SELECT b_bookID, b_title, 4.20
+                    SELECT b_bookID, b_title, 1
                     FROM books
                     WHERE b_title = 'Harry Potter and the Half-Blood Prince (Harry Potter  #6)'
                           and b_bookID = 1;
@@ -228,4 +228,3 @@ where
       b_bookID = p_bookID AND
       p_bookID = r_bookID;
 
-      
