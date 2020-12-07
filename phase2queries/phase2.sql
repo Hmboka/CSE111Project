@@ -227,3 +227,5 @@ where
       ad_bookID = b_bookID AND
       b_bookID = p_bookID AND
       p_bookID = r_bookID;
+
+      

@@ -1,5 +1,5 @@
 select b_title
-from books
+from books;
 
 --insert into fav auhtor....
 INSERT INTO faveauthors (fa_name, fa_myrating)
@@ -19,12 +19,13 @@ WHERE b_title = 'The Control of Nature';
 DELETE FROM hasread
 WHERE hr_name = 'Harry Potter and the Half-Blood Prince (Harry Potter  #6)';
 
+/*
 --add your own rating to books added to hasread......
 INSERT INTO hasread (hr_myrating)
 VALUES (9.2)
 WHERE hr_name = 'The Control of Nature';
 
-
+*/
 --delete books fom the main book able......
 DELETE FROM books
 WHERE b_title = 'Harry Potter and the Half-Blood Prince (Harry Potter  #6)';
