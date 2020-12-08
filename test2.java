@@ -3,7 +3,6 @@ import java.io.*;
 import java.util.Scanner;
 
 public class test2 {
-//public class test2 extends test{    //use when testing if we want to use sperate file if not the queires are at the bottom of this file
 	public static Connection connect;
 	public static Scanner scan = new Scanner(System.in);
 
@@ -121,15 +120,18 @@ public class test2 {
 
 
 	public static void goodreads1(String inputBookName){
+
+		Connection connect;
+		Statement stmt;
+		String query;
+
 		try{
-			Connection connect;
-			Statement stmt;
-			connect = DriverManager.getConnection("jdbc:sqlite");
+			
+			Class.forName("org.sqlite.JDBC");
+			connect = DriverManager.getConnection("jdbc:sqlite:data.sqlite");
 			stmt = connect.createStatement();
-			ResultSet rs = stmt.executeQuery(
-					"Select b_bookID, b_title, b_langcode, b_numpages, b_isbn "+
-					"From books " +
-					"where b_title = '" + inputBookName +"';");
+			query = "SELECT * " + "FROM books " + "where b_title LIKE " + "'%" + inputBookName + "%'";
+			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
 				String b_bookID = rs.getString("b_bookID");
 				String b_title = rs.getString("b_title");
