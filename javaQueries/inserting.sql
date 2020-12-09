@@ -2,6 +2,21 @@ DROP TRIGGER IF EXISTS books.t1;
 DROP TRIGGER IF EXISTS books.tdelbook; 
 
 CREATE
+    TRIGGER insBook AFTER INSERT
+    ON books
+    FOR EACH ROW
+    WHEN (NOT EXISTS (
+             select *
+             from books
+    ))
+    BEGIN
+        insert books
+        VALUES() 
+        
+    END;
+
+
+CREATE
     TRIGGER tdelbook AFTER DELETE
     ON books
     FOR EACH ROW
@@ -18,7 +33,7 @@ CREATE
                             where ad_bookID = OLD.b_bookID);
                             
 END;
-
+CREATE
     TRIGGER t2 AFTER INSERT
     ON authored
     FOR EACH ROW
@@ -36,7 +51,7 @@ from books;
 --then insert new book with max(book_id)+1
 
 
-INSERT INTO books (b_bookID, b_title, b_langcode, b_numpages, b_isbn)
+INSERT INTO books
 VALUES(45642, 'Mboka: The Way of Life in a Congo Village (A Congo Memoir)', 
         'eng', 264, '051750037X');
 
@@ -62,10 +77,10 @@ Delete from books
 where b_title like 'Mboka%';
 
 Delete from authored
-where ad_bookID = 45642;
+where ad_bookID = 45642 or ad_bookID = 45643;
 
 Delete from publisher
-where p_bookID = 45642;
+where p_bookID = 45642 or p_bookID = 45643;
 
 */
 select distinct b_langcode

@@ -19,5 +19,12 @@ where ad_name in (select hr_name
                     group by hr_name
                     having hr_myrating < 2.5);
 
-
 -- DROP VIEW fb_auth_pub_rating;
+/* Display book info when searched */
+CREATE VIEW searchBook(b_bookID, b_title, a_name, r_avgbookrating, b_langcode, b_numpages, b_isbn) as
+select b_bookID, b_title, a_name, r_avgbookrating, b_langcode, b_numpages, b_isbn 
+from books, authors, authored, rating
+where b_bookID = ad_bookID AND ad_name = a_name AND
+      r_bookID = b_bookID;
+
+select * from searchBook where b_title like '%Harry%';

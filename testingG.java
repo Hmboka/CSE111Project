@@ -7,13 +7,14 @@ public class testingG {
     private Connection c = null;
     private String dbName;
     private boolean isConnected = false;
+    
     Scanner myScanner = new Scanner(System.in); 
     private void openConnection(String _dbName) {
         dbName = _dbName;
 
         if (false == isConnected) {
-            System.out.println("++++++++++++++++++++++++++++++++++");
-            System.out.println("Open database: " + _dbName);
+            //System.out.println("++++++++++++++++++++++++++++++++++");
+            //System.out.println("Open database: " + _dbName);
 
             try {
                 String connStr = new String("jdbc:sqlite:");
@@ -29,16 +30,198 @@ public class testingG {
                 c.setAutoCommit(false);
 
                 isConnected = true;
-                System.out.println("success");
+                //System.out.println("success");
             } catch (Exception e) {
+                System.out.println("\nUnfortunately, we were unable to connect to your Personal Library Tracker.");
+                System.out.println("See error message below: ");
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                System.out.println();
                 System.exit(0);
             }
 
             System.out.println("++++++++++++++++++++++++++++++++++");
         }
     }
+    private int userIntro() {
+        System.out.println("Welcome to Your Personal Library Tracker");
+        System.out.println("Sponsored by GoodReads");
+		System.out.println("Enter 1 if you like to open GoodReads Database. Enter 2 if you like to open your Personal Library. Enter 0 to quit. ");
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("1. GoodReads Library Database");
+		System.out.println("2. Personal Library Database");
+        System.out.println("0. Quit");
+        int input = myScanner.nextInt();
+        try {
+
+            if(input < 0 || input > 2){
+                System.out.println("You have entered an invalid input, please try again...");
+                System.out.println();
+                userIntro();
+            }
+            if(input == 1){
+                //System.out.print("GoodReads Library Database ");
+                goodReads();
+            }
+            else if (input == 2){
+                //System.out.print("Personal Library Database ");
+                personal();
+            }
+            
+            else{
+                System.out.println("Exiting Library...");
+                System.out.println("Goodbye!");
+                System.out.println("End of Library Program");
+                end();
+            }
+            
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("++++++++++++++++++++++++++++++++++");
+        return 0;
+    }
+
+    private int goodReads() {
+        System.out.println("++++++++++++++++++++++++++++++++++");
+        System.out.println("This is your GoodReads Database.");
+		System.out.println("What would you like to do?");
+		System.out.println("1. Search books from general GoodReads Database?");
+		System.out.println("2. Would you like to add, delete, or edit books from the general GoodReads Database?");
+		System.out.println("3. Would you like to add a book from this general GoodReads DatabaseFavorite Database?");
+		System.out.println("4. Would you like to search books written by on auhtors?");
+		System.out.println("5. Would you like to search books with a certain rating?");
+		System.out.println("6. What book has a rating of at least (your input of rating vaule), written in (insert language), and has at least (insert number of pages) pages?");
+		System.out.println("0. Back");
+        int selectInput = myScanner.nextInt();
+        try {
+
+            if(selectInput < 0 || selectInput > 6){
+                System.out.println("Invalid Entry. Please enter an option listed above.");
+                goodReads();
+            }
+            else if(selectInput == 1){
+                System.out.print("Please enter the name of the book:");
+                myScanner.nextLine();
+                String inputBookName = myScanner.nextLine();
+                goodReads1(inputBookName);
+    
+            }
+            else if(selectInput == 2){
+                System.out.println("What would you like to do?");
+                System.out.println("1. Add book");
+                System.out.println("2. Delete Book");
+                    int selectInput2 = myScanner.nextInt();
+                    if(selectInput2 < 0 || selectInput2 > 2){
+                        System.out.println("Invalid Entry. Please enter an option listed above.");
+                        goodReads();
+                    }
+                    else if(selectInput2 == 1){
+                            //System.out.println("testing connection jhere");
+                            //System.out.println(selectInput2);						
+                            insertNewBook();
+                            //System.out.println("testing connection jhere");
+                        }
+                        else {
+                            //System.out.println(selectInput2);	
+                            // System.out.println("Enter Name of Book you want to Delete:");
+                            // myScanner.nextLine();
+                            // String inputBookName2_2 = myScanner.nextLine();
+                            // goodreads2_2(inputBookName2_2);
+                        }
+            }
+    
+            else if(selectInput == 6){
+                //userOption6();
+            }
+            else{//option 5 goes back to choose user or admin
+                userIntro();
+            }
+            goodReads();
+            
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("++++++++++++++++++++++++++++++++++");
+        return 0;
+    }
+    private int personal() {
+        System.out.println("++++++++++++++++++++++++++++++++++");
+		System.out.println("This is your Personal Library Tracker");
+		System.out.println("What would you like to do?");
+		System.out.println("1. Search books from general GoodReads Database?");
+		System.out.println("2. Would you like to add, delete, or edit books from the general GoodReads Database?");
+		System.out.println("3. Search books from your Favorite Database?");
+		System.out.println("4. Would you like to add, delete, or edit your Favorite Database?");
+		System.out.println("5. Would you like to search books based on Authors from either Database?");
+		System.out.println("6. Would you like to search books based on Rating from either Database?");
+		System.out.println("0. Back");
+        int selectInput = myScanner.nextInt();
+        try {
+
+            if(selectInput < 0 || selectInput > 6){
+                System.out.println("Invalid Entry. Please enter an option listed above.");
+                personal();
+            }
+            else if(selectInput == 1){
+                System.out.println("Please enter the name of the book?");
+                myScanner.nextLine();
+                String inputBookName = myScanner.nextLine();
+    
+            }
+    
+            else if(selectInput == 6){
+                
+            }
+            else{
+                userIntro();
+            }
+            personal();
+                  
+            
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("++++++++++++++++++++++++++++++++++");
+        return 0;
+    }
+    private int goodReads1(String inputBookName) {
+        //searches book based on title entered
+        // b_bookID, b_title, a_name, r_avgbookrating, b_langcode, b_numpages, b_isbn 
+        try {
+             String sql  = "select b_bookID, b_title, a_name, r_avgbookrating, b_langcode, b_numpages, b_isbn " + 
+                            "from books, authors, authored, rating " + 
+                            "where b_bookID = ad_bookID AND ad_name = a_name AND r_bookID = b_bookID AND b_title LIKE "+ "'%" + inputBookName + "%'";
+             ResultSet rs = c.prepareStatement(sql).executeQuery();
+             while (rs.next()) {
+				String b_bookID = rs.getString("b_bookID");
+                String b_title = rs.getString("b_title");
+                String a_name = rs.getString("a_name");
+                double r_avgbookrating = rs.getDouble("r_avgbookrating");
+                String b_langcode = rs.getString("b_langcode");
+                int b_numpages = rs.getInt("b_numpages");
+                String b_isbn = rs.getString("b_isbn");
+                System.out.println(b_bookID + "\t" + b_title + "\t" + a_name + r_avgbookrating + "\t" + "\t" + b_langcode + "\t" + b_numpages + "\t" + b_isbn + "\n");
+            }
+            rs.close();
+  
+            
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("++++++++++++++++++++++++++++++++++");
+        return 0;
+    }
+
+
+    
+
+
     private int createBookID() {
+        System.out.println("++++++++++++++++++++++++++++++++++");
         System.out.println("Creating new bookID...");
         //user chooses lang code from list by entering a number
         int newID = 1;
@@ -66,7 +249,7 @@ public class testingG {
         System.out.println("++++++++++++++++++++++++++++++++++");
         return 0;
     }
-    private int authorCount() {
+    private int authorCount(String inputAuthName) {
         System.out.println("Checking to see if author already exists...");
         //user chooses lang code from list by entering a number
         int authCount = 1;
@@ -75,7 +258,7 @@ public class testingG {
 
             String sqlBID = "select count(a_name) " +
                             "from authors " +
-                            "where a_name = 'habibatu karim mboka'; ";
+                            "where a_name = " + "'" + inputAuthName + "'";
 
         
             ResultSet rsBID = c.prepareStatement(sqlBID).executeQuery();
@@ -129,85 +312,103 @@ public class testingG {
     private int insertNewBook() {
         //System.out.println("Creating new bookID...");
         int newID = createBookID();
-        System.out.print("Enter title: ");
+        System.out.print("Enter book title: ");
+        myScanner.nextLine();
         String title = myScanner.nextLine();
-        //String title = "Mboka: The Way of Life in a Congo Village (A Congo Memoir)";
-        System.out.print("Enter author(s)--seperate multiple authors with a forward slash: ");
-        String authors = myScanner.nextLine();
-        //String authors = "Lona B. Kenney";
-        System.out.print("Enter book publisher: ");
-        String publisher = myScanner.nextLine();
-        //String publisher = "Crown Publishers";
+        //System.out.println("Title = " + title);
+            //String title = "Mboka: The Way of Life in a Congo Village (A Congo Memoir)";
+    //System.out.print("Enter author(s)--Seperate multiple authors with a forward slash: ");
+    //String authors = myScanner.nextLine();
+            //String authors = "Lona B. Kenney";
+        //System.out.println("Title = " + title);
+        //System.out.println("author = " + authors);
+    //System.out.print("Enter book publisher: ");
+    //String publisher = myScanner.nextLine();
+            //String publisher = "Crown Publishers";
         System.out.print("Enter isbn: ");
         String isbn = myScanner.nextLine();
-        //String isbn = "051750037X";     
+            //String isbn = "051750037X";     
         System.out.print("Enter page count: ");
         int pagecnt = myScanner.nextInt();           
-       // int pagecnt = 264;
+            // int pagecnt = 264;
        System.out.print("Enter language code--enter \"see list\" to see available codes: ");
+       myScanner.nextLine();
        String lang = myScanner.nextLine();
-       //String lang = "eng";
-        if(lang == "see list" || lang == "See list"){
-            printLangCode();
-            System.out.print("Enter language code: ");
-            lang = myScanner.nextLine();
-        }
+            //String lang = "eng";
+        // if(lang == "see list" || lang == "See list"){
+        //     printLangCode();
+        //     System.out.print("Enter language code: ");
+        //     lang = myScanner.nextLine();
+        // }
 
 
 
         try {
-            //insert to books
-            String sql = "INSERT INTO books (b_bookID, b_title, b_langcode, b_numpages, b_isbn) "+
-                         "VALUES(?,?,?,?,?); ";
+            String sql = "INSERT INTO books VALUES(?, ?, ?, ?, ?)";
             PreparedStatement stmt = c.prepareStatement(sql);
             stmt.setInt(1, newID);
             stmt.setString(2, title);
             stmt.setString(3, lang);
             stmt.setInt(4, pagecnt);
             stmt.setString(5, isbn);
-            stmt.addBatch();
-            stmt.executeBatch();
-            //insert to authored
-            String sql2 = "INSERT INTO authored (ad_name, ad_bookID) "+
-                         "VALUES(?,?); ";
-            PreparedStatement stmt2 = c.prepareStatement(sql2);
-            stmt2.setString(1,authors);
-            stmt2.setInt(2, newID);
-            stmt2.addBatch();
-            stmt2.executeBatch();
-            //insert to authors
-            //ensure that author does not exist
-            PreparedStatement stmt3;
-            if(authorCount() == 0){
-                String sql3 = "INSERT INTO authors (a_name) "+
-                            "VALUES(?); ";
-                stmt3 = c.prepareStatement(sql3);
-                stmt3.setString(1,authors);
-                stmt3.addBatch();
-                stmt3.executeBatch();
-                c.commit();
-                stmt3.close();          
-            } else{
-                System.out.println("Author already exists!");
-            }
-            //insert into publisher
-            String sql4 = "INSERT INTO publisher (p_name, p_bookID, p_authname) "+
-                         "VALUES(?,?,?); ";
-            PreparedStatement stmt4 = c.prepareStatement(sql4);
-            stmt4.setString(1,publisher);
-            stmt4.setInt(2, newID);
-            stmt4.setString(3, authors);
-            stmt4.addBatch();
-            stmt4.executeBatch();
-            //comit changes
+                //stmtInsProd.addBatch();
+            
+            stmt.executeUpdate();
             c.commit();
-            // STEP: Clean-up environment
             stmt.close();
-            stmt2.close();
-            stmt4.close();
+            //insert to books
+            // String sql = "INSERT INTO books "+
+            //              "VALUES( "+ newID + ", '" + title + "','" + lang + "','" + pagecnt + "','" + isbn + "');";
+            // PreparedStatement stmt = c.prepareStatement(sql);
+            // // stmt.setInt(1, newID);
+            // // stmt.setString(2, title);
+            // // stmt.setString(3, lang);
+            // // stmt.setInt(4, pagecnt);
+            // // stmt.setString(5, isbn);
+            // //stmt.addBatch();
+            // stmt.executeUpdate();
+            // c.commit();
+            // //insert to authored
+            // String sql2 = "INSERT INTO authored (ad_name, ad_bookID) "+
+            //              "VALUES(?,?); ";
+            // PreparedStatement stmt2 = c.prepareStatement(sql2);
+            // stmt2.setString(1,authors);
+            // stmt2.setInt(2, newID);
+            // stmt2.addBatch();
+            // stmt2.executeBatch();
+            // c.commit();
+            // //insert to authors
+            // //ensure that author does not exist
+            // PreparedStatement stmt3;
+            // if(authorCount(authors) == 0){
+            //     String sql3 = "INSERT INTO authors (a_name) "+
+            //                 "VALUES(?); ";
+            //     stmt3 = c.prepareStatement(sql3);
+            //     stmt3.setString(1,authors);
+            //     stmt3.addBatch();
+            //     stmt3.executeBatch();
+            //     c.commit();
+            //     stmt3.close();          
+            // } else{
+            //     System.out.println("Author already exists!");
+            // }
+            // //insert into publisher
+            // String sql4 = "INSERT INTO publisher (p_name, p_bookID, p_authname) "+
+            //              "VALUES(?,?,?); ";
+            // PreparedStatement stmt4 = c.prepareStatement(sql4);
+            // stmt4.setString(1,publisher);
+            // stmt4.setInt(2, newID);
+            // stmt4.setString(3, authors);
+            // stmt4.addBatch();
+            // stmt4.executeBatch();
+            // //comit changes
+            // c.commit();
+            // // STEP: Clean-up environment
+            // stmt.close();
+            // stmt2.close();
+            // stmt4.close();
             
             System.out.println("Successfully created book: " + title);
-            
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
@@ -215,6 +416,11 @@ public class testingG {
         System.out.println("++++++++++++++++++++++++++++++++++");
         return 0;
     }
+    private void end(){
+		myScanner.close();
+		System.exit(0);
+	}
+
     private void closeConnection() {
         if (true == isConnected) {
             System.out.println("++++++++++++++++++++++++++++++++++");
@@ -236,43 +442,12 @@ public class testingG {
         }
     }
 
-    private void create_View1() {
-        System.out.println("++++++++++++++++++++++++++++++++++");
-        System.out.println("Create V1");
-        try {
-            Statement stmt = c.createStatement();
-
-            // STEP: Execute update statement
-
-            String sql = "CREATE view V1 (" + "c_custkey, c_name, c_address, c_phone, c_acctbal, c_mktsegment, c_comment, c_nation, c_region) as "
-                    + "select c_custkey, c_name, c_address, c_phone, c_acctbal, c_mktsegment, c_comment, n_name, r_name "
-                    + "from nation, region, customer " 
-                    + "where c_nationkey = n_nationkey AND "
-                    + "n_regionkey = r_regionkey;";
-            stmt.execute(sql);
-
-            // STEP: Commit transaction
-            c.commit();
-
-            stmt.close();
-            System.out.println("success");
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            try {
-                c.rollback();
-            } catch (Exception e1) {
-                System.err.println(e1.getClass().getName() + ": " + e1.getMessage());
-            }
-        }
-
-        System.out.println("++++++++++++++++++++++++++++++++++");
-    }
    
     public static void main(String args[]) {
         testingG sj = new testingG();
         
         sj.openConnection("data/grapp.sqlite");
-        sj.insertNewBook();
+        sj.userIntro();
         //sj.createBookID();
         //sj.closeConnection();
     }
