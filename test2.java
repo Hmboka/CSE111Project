@@ -93,7 +93,7 @@ public class test2 {
 		System.out.println("3. Would you like to add a book from this general GoodReads DatabaseFavorite Database?");
 		System.out.println("4. Would you like to search books written by on auhtors?");		//done
 		System.out.println("5. Would you like to search books with a certain rating?");
-		System.out.println("6. What book has a rating of at least (your input of rating vaule), written in (insert language), and has at least (insert number of pages) pages?");
+		System.out.println("6. What book has a rating of at least (your input of rating value), written in (insert language), and has at least (insert number of pages) pages?");
 		System.out.println("0. Back");
         int selectInput = myScanner.nextInt();
         try {
@@ -118,11 +118,8 @@ public class test2 {
                         System.out.println("Invalid Entry. Please enter an option listed above.");
                         goodReads();
                     }
-                    else if(selectInput2 == 1){
-                            //System.out.println("testing connection jhere");
-                            //System.out.println(selectInput2);						
+                    else if(selectInput2 == 1){					
                             insertNewBook();
-                            //System.out.println("testing connection jhere");
                         }
                         else {
                             //System.out.println(selectInput2);	
@@ -139,6 +136,10 @@ public class test2 {
 				String inputBookName4 = myScanner.nextLine();
 				System.out.println("++++++++++++++++++++++++++++++++++");
 				goodreads4(inputBookName4);
+	
+			}
+			if(selectInput == 6){
+				goodreads6();
 	
 			}
 			if(selectInput == 0){
@@ -165,10 +166,10 @@ public class test2 {
 		System.out.println("What would you like to do?");
 		System.out.println("1. Search books from your Personal Read Database?");
 		System.out.println("2. Would you like to add a book from the general GoodReads Database to your Personal Read Database?");
-		System.out.println("3. Search books from your Favorite Database?");
+		System.out.println("3. Search books from your Favorite Database?");  //done
 		System.out.println("4. Would you like to manually add, delete from your Favorite Database?");
 		System.out.println("5. Would you like to search books based on Authors from either Database?");
-		System.out.println("6. Would you like to search books based on Rating from either Database?");
+		System.out.println("6. Would you like to search books based on Rating from either Database?"); //done
 		System.out.println("0. Back");
 		int selectInputp = myScanner.nextInt();
         try {
@@ -232,34 +233,31 @@ public class test2 {
         System.out.println("++++++++++++++++++++++++++++++++++");
         return 0;
     }
-    private int goodReads1(String inputBookName1) {
+    private int goodReads1(String inputBookName) {
         //searches book based on title entered
         // b_bookID, b_title, a_name, r_avgbookrating, b_langcode, b_numpages, b_isbn 
         try {
-             String sql  = "select b_bookID, b_title, a_name, r_avgbookrating, b_langcode, b_numpages, b_isbn " + 
-                            "from books, authors, authored, rating " + 
-                            "where b_bookID = ad_bookID AND ad_name = a_name AND r_bookID = b_bookID AND b_title LIKE "+ "'%" + inputBookName1 + "%'";
-             ResultSet rs = c.prepareStatement(sql).executeQuery();
-             while (rs.next()) {
+            Statement stmt = c.createStatement();
+			String query = "SELECT * " + "FROM books " + "where b_title LIKE " + "'%" + inputBookName + "%'";
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
 				String b_bookID = rs.getString("b_bookID");
-                String b_title = rs.getString("b_title");
-                String a_name = rs.getString("a_name");
-                double r_avgbookrating = rs.getDouble("r_avgbookrating");
+				String b_title = rs.getString("b_title");
                 String b_langcode = rs.getString("b_langcode");
-                int b_numpages = rs.getInt("b_numpages");
+                String b_numpages = rs.getString("b_numpages");
                 String b_isbn = rs.getString("b_isbn");
-                System.out.println(b_bookID + "\t" + b_title + "\t" + a_name + r_avgbookrating + "\t" + "\t" + b_langcode + "\t" + b_numpages + "\t" + b_isbn + "\n");
-            }
-            rs.close();
-  
-            
+				System.out.println(b_bookID + "\t" + b_title + "\t" + b_langcode + "\t" + b_numpages + "\t" + b_isbn);
+			}
+			rs.close();
+			stmt.close();
+
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         
         System.out.println("++++++++++++++++++++++++++++++++++");
         return 0;
-	}
+    }
 	
 	private int personal1(String inputBookNamep1) {
         //searches book based on title entered
@@ -335,7 +333,39 @@ public class test2 {
         return 0;
     }
 
+	private int goodreads6() {
 
+        System.out.println("Enter Rating");
+		myScanner.nextLine();
+		String input6_2 = myScanner.nextLine();
+		System.out.println("Enter Langauge Code");
+		//myScanner.nextLine();
+		String input6_1 = myScanner.nextLine();
+		System.out.println("Enter Number of Pages");
+		//myScanner.nextLine();
+		String input6_3 = myScanner.nextLine();
+        try {
+            Statement stmt = c.createStatement();
+//			String query = "SELECT b_title, b_numpages, b_langcode " + "FROM books " + "where b_numpages >= " + "'%" + input6_3 + "%'" + "AND b_langcode = " + "'%" + input6_1 + "%'" + "AND b_bookID in (SELECT r_bookID FROM rating where r_avgbookrating >= " + "'%" + input6_2 + "%')";
+			String query = "SELECT b_title, b_numpages, b_langcode " + "FROM books " + "where b_numpages >= " +  input6_3 + " AND b_langcode = '" + input6_1 + "' AND b_bookID IN(Select r_bookID From rating Where r_avgbookrating >= " + input6_2 + ")"; 
+
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				String b_title = rs.getString("b_title");
+                int b_numpages = rs.getInt("b_numpages");
+				String b_langcode = rs.getString("b_langcode");
+				System.out.println(b_title + "\t" + b_numpages + "\t" + b_langcode + "\t");
+			}
+			rs.close();
+			stmt.close();
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("++++++++++++++++++++++++++++++++++");
+        return 0;
+    }
 
 
 
