@@ -93,7 +93,7 @@ public class test2 {
 		System.out.println("3. Would you like to add a book from this general GoodReads DatabaseFavorite Database?");
 		System.out.println("4. Would you like to search books written by on auhtors?");		//done
 		System.out.println("5. Would you like to search books with a certain rating?");
-		System.out.println("6. What book has a rating of at least (your input of rating value), written in (insert language), and has at least (insert number of pages) pages?");
+		System.out.println("6. What book has a rating of at least (your input of rating value), written in (insert language), and has at least (insert number of pages) pages?"); //done
 		System.out.println("0. Back");
         int selectInput = myScanner.nextInt();
         try {
@@ -169,7 +169,7 @@ public class test2 {
 		System.out.println("3. Search books from your Favorite Database?");  //done
 		System.out.println("4. Would you like to manually add, delete from your Favorite Database?");
 		System.out.println("5. Would you like to search books based on Authors from either Database?");
-		System.out.println("6. Would you like to search books based on Rating from either Database?"); //done
+		System.out.println("6. Would you like to search books based on Rating from either Database?"); 
 		System.out.println("0. Back");
 		int selectInputp = myScanner.nextInt();
         try {
