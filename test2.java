@@ -172,9 +172,9 @@ public class test2 {
     }
     private int personal() {
         System.out.println("++++++++++++++++++++++++++++++++++");
-		System.out.println("This is your Personal Library Tracker");		//done
-		System.out.println("What would you like to do?");
-		System.out.println("1. Search books from your Personal Read Database?");
+		System.out.println("This is your Personal Library Tracker");		
+		System.out.println("What would you like to do?");	
+		System.out.println("1. Search books from your Personal Read Database?");	//done
 		System.out.println("2. Would you like to add a book from the general GoodReads Database to your Personal Read Database?");
 		System.out.println("3. Search books from your Favorite Database?");  //done
 		System.out.println("4. Would you like to manually add, delete from your Favorite Database?");
