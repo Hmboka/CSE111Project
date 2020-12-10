@@ -89,11 +89,11 @@ public class test2 {
         System.out.println("This is your GoodReads Database.");
 		System.out.println("What would you like to do?");
 		System.out.println("1. Search books from general GoodReads Database?");		//done
-		System.out.println("2. Would you like to add, delete, or edit books from the general GoodReads Database?");
-		System.out.println("3. Would you like to add a book from this general GoodReads DatabaseFavorite Database?");
+		System.out.println("2. Would you like to add, or delete from the general GoodReads Database?");
+		System.out.println("3. Would you like to add a book from this general GoodReads Database to your Favorite Database?");
 		System.out.println("4. Would you like to search books written by on auhtors?");		//done
-		System.out.println("5. Would you like to search books with a certain rating?");
-		System.out.println("6. What book has a rating of at least (your input of rating value), written in (insert language), and has at least (insert number of pages) pages?"); //done
+		System.out.println("5. Would you like to search books with a certain rating?");		//done
+		System.out.println("6. Search for a book that has a rating of at least (your input of rating value), written in (insert language), and has at least (insert number of pages) pages?"); //done
 		System.out.println("0. Back");
         int selectInput = myScanner.nextInt();
         try {
@@ -138,6 +138,11 @@ public class test2 {
 				goodreads4(inputBookName4);
 	
 			}
+			if(selectInput == 5){
+				goodreads5();
+	
+			}
+
 			if(selectInput == 6){
 				goodreads6();
 	
@@ -333,6 +338,35 @@ public class test2 {
         return 0;
     }
 
+	private int goodreads5() {
+
+        System.out.println("Enter Rating");
+		myScanner.nextLine();
+		String input5 = myScanner.nextLine();
+		System.out.println("++++++++++++++++++++++++++++++++++");
+		
+        try {
+            Statement stmt = c.createStatement();
+			String query = "SELECT b_title, r_avgbookrating " + "FROM books, rating " + "where b_bookID IN(Select r_bookID From rating Where r_avgbookrating >= " + input5 + ") Group By b_title"; 
+
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				String b_title = rs.getString("b_title");
+                String r_avgbookrating = rs.getString("r_avgbookrating");
+				System.out.println(b_title + "\t" + r_avgbookrating + "\t");
+			}
+			rs.close();
+			stmt.close();
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("++++++++++++++++++++++++++++++++++");
+        return 0;
+    }
+
+
 	private int goodreads6() {
 
         System.out.println("Enter Rating");
@@ -346,7 +380,7 @@ public class test2 {
 		String input6_3 = myScanner.nextLine();
         try {
             Statement stmt = c.createStatement();
-//			String query = "SELECT b_title, b_numpages, b_langcode " + "FROM books " + "where b_numpages >= " + "'%" + input6_3 + "%'" + "AND b_langcode = " + "'%" + input6_1 + "%'" + "AND b_bookID in (SELECT r_bookID FROM rating where r_avgbookrating >= " + "'%" + input6_2 + "%')";
+			// String query = "SELECT b_title, b_numpages, b_langcode " + "FROM books " + "where b_numpages >= " + "'%" + input6_3 + "%'" + "AND b_langcode = " + "'%" + input6_1 + "%'" + "AND b_bookID in (SELECT r_bookID FROM rating where r_avgbookrating >= " + "'%" + input6_2 + "%')";
 			String query = "SELECT b_title, b_numpages, b_langcode " + "FROM books " + "where b_numpages >= " +  input6_3 + " AND b_langcode = '" + input6_1 + "' AND b_bookID IN(Select r_bookID From rating Where r_avgbookrating >= " + input6_2 + ")"; 
 
 			ResultSet rs = stmt.executeQuery(query);
