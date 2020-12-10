@@ -130,6 +130,11 @@ public class test2 {
                         }
 			}
 			
+			// if(selectInput == 3){
+			//	goodReads3();
+	
+			// }
+
 			if(selectInput == 4){
 				System.out.println("Please enter the name of the author?");
 				myScanner.nextLine();
@@ -173,13 +178,15 @@ public class test2 {
 		System.out.println("2. Would you like to add a book from the general GoodReads Database to your Personal Read Database?");
 		System.out.println("3. Search books from your Favorite Database?");  //done
 		System.out.println("4. Would you like to manually add, delete from your Favorite Database?");
-		System.out.println("5. Would you like to search books based on Authors from either Database?");
-		System.out.println("6. Would you like to search books based on Rating from either Database?"); 
+		System.out.println("5. Would you like to search books based on Authors from Read Database?");	//done
+		System.out.println("6. Would you like to search books based on Authors from Favorite Database?");	//done
+		System.out.println("7. Would you like to search books based on Rating from Read Database?"); 	//done
+		System.out.println("8. Would you like to search books based on Rating from Favorite Database?"); 	//done
 		System.out.println("0. Back");
 		int selectInputp = myScanner.nextInt();
         try {
 
-            if(selectInputp < 0 || selectInputp > 6){
+            if(selectInputp < 0 || selectInputp > 8){
                 System.out.println("Invalid Entry. Please enter an option listed above.");
                 personal();
             }
@@ -219,7 +226,20 @@ public class test2 {
 				System.out.println("++++++++++++++++++++++++++++++++++");
 				personal3(inputBookNamep3);
 			}
+			
+			else if(selectInputp == 5){
+				personal5();
+			}
+			else if(selectInputp == 6){
+				personal6();
+			}
+			else if(selectInputp == 7){
+				personal7();
+			}
 
+			else if(selectInputp == 8){
+				personal8();
+			}
 			if(selectInputp == 0){
 				userIntro();
 			}
@@ -289,6 +309,31 @@ public class test2 {
         return 0;
     }
 
+	// private int goodReads3() {
+    //     //searches book based on title entered
+    //     // b_bookID, b_title, a_name, r_avgbookrating, b_langcode, b_numpages, b_isbn 
+    //     try {
+    //         Statement stmt = c.createStatement();
+	// 		String query = "SELECT * " + "FROM books " + "where b_title LIKE " + "'%" + inputBookName + "%'";
+	// 		ResultSet rs = stmt.executeQuery(query);
+	// 		while(rs.next()){
+	// 			String b_bookID = rs.getString("b_bookID");
+	// 			String b_title = rs.getString("b_title");
+    //             String b_langcode = rs.getString("b_langcode");
+    //             String b_numpages = rs.getString("b_numpages");
+    //             String b_isbn = rs.getString("b_isbn");
+	// 			System.out.println(b_bookID + "\t" + b_title + "\t" + b_langcode + "\t" + b_numpages + "\t" + b_isbn);
+	// 		}
+	// 		rs.close();
+	// 		stmt.close();
+
+    //     } catch (Exception e) {
+    //         System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    //     }
+        
+    //     System.out.println("++++++++++++++++++++++++++++++++++");
+    //     return 0;
+    // }
 
 	private int personal3(String inputBookNamep3) {
         //searches book based on title entered
@@ -364,6 +409,51 @@ public class test2 {
         
         System.out.println("++++++++++++++++++++++++++++++++++");
         return 0;
+	}
+	private int personal5() {
+		System.out.println("Enter Author Name");
+		myScanner.nextLine();
+		String inputp5 = myScanner.nextLine();
+		System.out.println("++++++++++++++++++++++++++++++++++");
+        try {
+             String sql  = "SELECT hr_name from hasread where hr_bookID IN (Select ad_bookID From authored where ad_name LIKE " + "'%" + inputp5 + "%')";
+             ResultSet rs = c.prepareStatement(sql).executeQuery();
+             while (rs.next()) {
+				String hr_name = rs.getString("hr_name");
+                System.out.println(hr_name + "\t");
+            }
+            rs.close();
+  
+            
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("++++++++++++++++++++++++++++++++++");
+        return 0;
+    }
+	
+	private int personal6() {
+		System.out.println("Enter Author Name");
+		myScanner.nextLine();
+		String inputp6 = myScanner.nextLine();
+		System.out.println("++++++++++++++++++++++++++++++++++");
+        try {
+             String sql  = "SELECT fb_title from favebooks where fb_bookID IN (Select ad_bookID From authored where ad_name LIKE " + "'%" + inputp6 + "%')";
+             ResultSet rs = c.prepareStatement(sql).executeQuery();
+             while (rs.next()) {
+				String fb_title = rs.getString("fb_title");
+                System.out.println(fb_title + "\t");
+            }
+            rs.close();
+  
+            
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("++++++++++++++++++++++++++++++++++");
+        return 0;
     }
 
 
@@ -401,7 +491,51 @@ public class test2 {
         return 0;
     }
 
-
+	private int personal7() {
+		System.out.println("Enter Rating ");
+		myScanner.nextLine();
+		String inputp7 = myScanner.nextLine();
+		System.out.println("++++++++++++++++++++++++++++++++++");
+        try {
+             String sql  = "SELECT fb_title from favebooks where fb_myrating >= " + inputp7;
+             ResultSet rs = c.prepareStatement(sql).executeQuery();
+             while (rs.next()) {
+				String fb_title = rs.getString("fb_title");
+                System.out.println(fb_title + "\t");
+            }
+            rs.close();
+  
+            
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("++++++++++++++++++++++++++++++++++");
+        return 0;
+	}
+	
+	private int personal8() {
+		System.out.println("Enter Rating ");
+		myScanner.nextLine();
+		String inputp8 = myScanner.nextLine();
+		System.out.println("++++++++++++++++++++++++++++++++++");
+        try {
+             String sql  = "SELECT hr_name from hasread where hr_myrating >= " + inputp8;
+             ResultSet rs = c.prepareStatement(sql).executeQuery();
+             while (rs.next()) {
+				String hr_name = rs.getString("hr_name");
+                System.out.println(hr_name + "\t");
+            }
+            rs.close();
+  
+            
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("++++++++++++++++++++++++++++++++++");
+		return 0;
+	}
 
     private int createBookID() {
         System.out.println("++++++++++++++++++++++++++++++++++");
