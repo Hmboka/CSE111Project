@@ -91,7 +91,7 @@ public class test2 {
 		System.out.println("1. Search books from general GoodReads Database?");		//done
 		System.out.println("2. Would you like to add, or delete from the general GoodReads Database?");
 		System.out.println("3. Would you like to add a book from this general GoodReads Database to your Favorite Database?");
-		System.out.println("4. Would you like to search books written by on auhtors?");		//done
+		System.out.println("4. Would you like to search books written by a certain auhtor?");		//done
 		System.out.println("5. Would you like to search books with a certain rating?");		//done
 		System.out.println("6. Search for a book that has a rating of at least (your input of rating value), written in (insert language), and has at least (insert number of pages) pages?"); //done
 		System.out.println("0. Back");
