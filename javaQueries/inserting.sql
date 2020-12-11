@@ -70,6 +70,11 @@ where ad_bookID = 45642;
 select *
 from publisher
 where p_bookID = 45642;
+select *
+from authors
+where a_name = 'lobsi';
+
+select count(*) from favebooks where fb_bookID = 45642;
 
 /*
 

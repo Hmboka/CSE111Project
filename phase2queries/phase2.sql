@@ -228,3 +228,9 @@ where
       b_bookID = p_bookID AND
       p_bookID = r_bookID;
 
+-- 09/09/2020
+
+-- 051750037X
+
+-- 45642
+Scanner myScanner = new Scanner(System.in);

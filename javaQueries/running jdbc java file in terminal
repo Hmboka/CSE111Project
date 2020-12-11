@@ -1,0 +1,2 @@
+Habibatus-MBP-4:CSE111Project habibatumboka$ javac testingG.java
+Habibatus-MBP-4:CSE111Project habibatumboka$ java -classpath ".:sqlite-jdbc-3.32.3.2.jar" testingG

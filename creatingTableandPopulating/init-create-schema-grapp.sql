@@ -3,7 +3,7 @@ create table books (
     b_title varchar(250) not null,
     b_langcode char(10) not null,
     b_numpages decimal(8,0),
-    b_isbn char(13,0)
+    b_isbn char(13,0), unique
 );
 
 

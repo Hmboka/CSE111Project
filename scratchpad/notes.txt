@@ -1,0 +1,25 @@
+	// private int goodReads3() {
+    //     //searches book based on title entered
+    //     // b_bookID, b_title, a_name, r_avgbookrating, b_langcode, b_numpages, b_isbn 
+    //     try {
+    //         Statement stmt = c.createStatement();
+	// 		String query = "SELECT * " + "FROM books " + "where b_title LIKE " + "'%" + inputBookName + "%'";
+	// 		ResultSet rs = stmt.executeQuery(query);
+	// 		while(rs.next()){
+	// 			String b_bookID = rs.getString("b_bookID");
+	// 			String b_title = rs.getString("b_title");
+    //             String b_langcode = rs.getString("b_langcode");
+    //             String b_numpages = rs.getString("b_numpages");
+    //             String b_isbn = rs.getString("b_isbn");
+	// 			System.out.println(b_bookID + "\t" + b_title + "\t" + b_langcode + "\t" + b_numpages + "\t" + b_isbn);
+	// 		}
+	// 		rs.close();
+	// 		stmt.close();
+
+    //     } catch (Exception e) {
+    //         System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    //     }
+        
+    //     System.out.println("++++++++++++++++++++++++++++++++++");
+    //     return 0;
+    // }
