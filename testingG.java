@@ -493,19 +493,26 @@ public class testingG {
         int count = 0;
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter Rating: ");
-		double input5 = scanner.nextDouble();
+        double input5 = scanner.nextDouble();
+        
+        if(input5 == 0){
+            goodReads();
+        }
 		System.out.println("++++++++++++++++++++++++++++++++++");
-		
+        
+
+        System.out.println("Title" + "\t" + "Author(s)" + "\t" + "Ratings" + "\t");
         try {
             Statement stmt = c.createStatement();
-			String query = "SELECT b_title, r_avgbookrating " + "FROM books, rating " + "where b_bookID IN(Select r_bookID From rating Where r_avgbookrating >= " + input5 + ") Group By b_title"; 
+			String query = "Select b_title, a_name, r_avgbookrating " + "from books, authored, authors, rating " + "where b_bookID = ad_bookID AND ad_name = a_name AND b_bookID = r_bookID and r_avgbookrating = " + input5; 
 
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
                 count++;
-				String b_title = rs.getString("b_title");
+                String b_title = rs.getString("b_title");
+                String name = rs.getString("a_name");
                 double r_avgbookrating = rs.getDouble("r_avgbookrating");
-				System.out.println(b_title + "\t" + r_avgbookrating + "\t");
+				System.out.println(b_title + "\t" + name + "\t" + r_avgbookrating + "\t");
 			}
 			rs.close();
             stmt.close();
