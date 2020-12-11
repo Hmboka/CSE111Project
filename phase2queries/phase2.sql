@@ -243,7 +243,7 @@ where
 --       ad_name = a_name AND
 --       b_bookID = fb_bookID);
 
-
+delete from hasread where hr_name = "John Grisham";
 -- 09/09/2020
 
 -- 051750037X

@@ -183,12 +183,15 @@ public class testingG {
 		System.out.println("6. Would you like to search books based on Authors from Favorite Books Database?");	//done
 		System.out.println("7. Would you like to search books based on Rating from Read Database?"); 	//done
         System.out.println("8. Would you like to search books based on Rating from Favorite Database?"); 	//done
-        System.out.println("9. Would you like to display on Favorite Books?");
+        System.out.println("9. Would you like to display Favorite Books?");
+        System.out.println("10. Would you add a book to your Read Database?");
+        System.out.println("11. Would you like to display your Read Database?");
+
 		System.out.println("0. Back");
 		int selectInputp = myScanner.nextInt();
         try {
 
-            if(selectInputp < 0 || selectInputp > 9){
+            if(selectInputp < 0 || selectInputp > 11){
                 System.out.println("Invalid Entry. Please enter an option listed above.");
                 personal();
             }
@@ -251,6 +254,12 @@ public class testingG {
             }
             else if(selectInputp == 9){
                 personal9();
+            }
+            else if (selectInputp == 10){
+                personal10();
+            }
+            else if (selectInputp == 11){
+                personal11();
             }
 			if(selectInputp == 0){
 				userIntro();
@@ -325,6 +334,7 @@ public class testingG {
             }
             if (count == 0){
                 System.out.println("\nNo matching results found for this search\n");
+                personal();
             }
             rs.close();
   
@@ -985,6 +995,7 @@ public class testingG {
     }
 
 
+
     private int deleteBook() {
         Scanner scanner = new Scanner(System.in);
         String usrInput = "";
@@ -1104,6 +1115,167 @@ public class testingG {
         System.out.println("++++++++++++++++++++++++++++++++++");
         return 0;
     }
+    // private int fuck(){
+
+    // }
+
+    // private int trying(String inputAuthName) {
+    //     System.out.println("Enter title to search book ID: ");
+	// 	myScanner.nextLine();
+	// 	String temp = myScanner.nextLine();
+
+    //     goodReads1(temp);
+
+    //     System.out.println("Enter book ID: ");
+    //     int bookID = myScanner.nextInt();
+    //     String name;
+
+    //     System.out.println("Enter rating: ");
+    //     double rating = myScanner.nextDouble();
+
+    //     System.out.println("Enter date you've read it: ");
+    //     String date = myScanner.nextLine();
+
+        
+
+
+    //     try {
+    //         Statement stmt = c.createStatement();
+	// 		String sql = "SELECT b_title, ad_name " + "FROM books, authored " + "where b_bookID = ad_bookID and b_bookID = " + bookID;
+    //         ResultSet rs = stmt.executeQuery(sql);
+    //         String b_title = "";
+	// 		while(rs.next()){
+    //             b_title = rs.getString("b_title");
+    //             name = rs.getString("ad_name");
+    //         }
+            
+    //         String sql2 = "INSERT INTO hasread " +
+    //                       "VALUES(?,?,?,?); ";
+
+    //         PreparedStatement stmt2 = c.prepareStatement(sql2);
+    //         stmt2.setString(1, name);
+    //         stmt2.setInt(2, bookID);
+    //         stmt2.setDouble(3, rating);
+    //         stmt2.setString(4, date);
+
+    //         stmt2.executeUpdate();
+
+            
+    //         // STEP: Commit
+    //         c.commit();
+
+    //         // STEP: Clean up Environment
+	// 		rs.close();
+	// 		stmt.close();
+    //         stmt2.close();
+
+    //        rs.close();
+ 
+           
+    //    } catch (Exception e) {
+    //        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    //    }
+       
+    //    System.out.println("++++++++++++++++++++++++++++++++++");
+    //    return 0;
+    // }
+
+    private int personal10() {
+        String name = "";
+        System.out.print("Search title and copy bookID of desired book: ");
+        myScanner.nextLine();
+        String title = myScanner.nextLine();
+        // incase user doesnt enter anything
+        if(title.length() == 0){
+            System.out.println("Sorry, you're entry is not a valid title! Please try again.");
+            personal();
+        }
+        //print books with title so user can copy book ID
+        goodReads1(title);
+
+        //user pastes book ID in terminal
+        System.out.print("Enter book ID: ");
+        int bookID = myScanner.nextInt();
+
+        try {
+
+            Statement stmt = c.createStatement();
+			String sql = "SELECT b_title, ad_name " + "FROM books, authored " + "where b_bookID = ad_bookID and b_bookID = " + bookID;
+            ResultSet rs = stmt.executeQuery(sql);
+            String b_title = "";
+			while(rs.next()){
+                b_title = rs.getString("b_title");
+                name = rs.getString("ad_name");
+            }
+
+            // collect users rating of book
+            System.out.print("Enter your book rating for ''" + b_title + "': ");
+            double fb_rating = myScanner.nextDouble();
+            
+            //check if book rating is not a double
+            if(fb_rating != (double)(fb_rating)){
+                System.out.print("Sorry, you're entry is not a valid rating! \n Please enter a value between 0.1 to 5.0: ");
+                fb_rating = myScanner.nextDouble();
+
+                //as long as user keeps putting in incorrect values, they will keep having to enter a rating
+                while(fb_rating < 0.1 || fb_rating > 5.0){
+                    System.out.print("Invalid rating! \n Please enter a value between 0.1 to 5.0: ");
+                    fb_rating = myScanner.nextDouble();
+                }
+                
+            }
+            System.out.print("Enter read date in the form of mm/dd/yyyy: ");
+            myScanner.nextLine();
+            String date = myScanner.nextLine();
+        //System.out.println(pubdate.length());
+            while (date.contains(" /") || date.contains("/ ") || date.length() != 10){
+                if(date.contains(" /") || date.contains("/ ")){
+                    System.out.print("Invalid input. No whitespace between forward slashes. Try again: ");
+                    date = myScanner.nextLine();
+                } else if (date.charAt(2) != '/' || date.charAt(5) != '/'){
+                    System.out.println("Invalid input. Please follow format.");
+                    System.out.print("Enter book publish date in the form of m/dd/yyyy: ");
+                    date = myScanner.nextLine();
+                }
+                else{
+                System.out.print("Invalid input. Please try again: ");
+                date = myScanner.nextLine();
+                }
+                
+            }
+
+            // insert data into favebooks
+            String sql2 = "INSERT INTO hasread " +
+                          "VALUES(?,?,?,?); ";
+
+            PreparedStatement stmt2 = c.prepareStatement(sql2);
+            stmt2.setString(1, name);
+            stmt2.setInt(2, bookID);
+            stmt2.setDouble(3, fb_rating);
+            stmt2.setString(4, date);
+
+            stmt2.executeUpdate();
+
+            
+            // STEP: Commit
+            c.commit();
+
+            // STEP: Clean up Environment
+			rs.close();
+			stmt.close();
+            stmt2.close();
+            System.out.print("Successfully added book to Read Database. \n");
+  
+            
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("++++++++++++++++++++++++++++++++++");
+        return 0;
+    }
+
+
 
     private int authorCount(String inputAuthName) {
         System.out.println("Checking to see if author already exists...");
@@ -1310,6 +1482,44 @@ public class testingG {
         }
         
         System.out.println("++++++++++++++++++++++++++++++++++");
+    
+    }
+    private void personal11() {
+        int count = 0;
+        //user chooses lang code from list by entering a number
+        
+        System.out.println("Name" + "\t" + "Book ID" +"\t" + "\t" + "My Rating"+ "\t" + "Date Read");
+        try {
+
+            String sql = "select * " +
+                            "from hasread; ";
+
+            ResultSet rs = c.prepareStatement(sql).executeQuery();
+             while (rs.next()) {
+                 count++;
+				String hr_name = rs.getString("hr_name");
+                String hr_bookID = rs.getString("hr_bookID");
+                String hr_myrating = rs.getString("hr_myrating");
+                String hr_date = rs.getString("hr_date");
+                System.out.println(hr_name + "\t" + hr_bookID + "\t" + hr_myrating + hr_date + "\n");
+                System.out.printf("%20s %-10s %10s %10s", hr_name, hr_bookID, hr_myrating, hr_date);
+            }
+            if (count == 0){
+                System.out.println("\nHas read empty.\n");
+                personal();
+            }
+            rs.close();
+            
+            // STEP: Clean-up environment
+        
+            //stmt.close();
+           // System.out.println("Successfully created book id: " + newID);
+          
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("\n++++++++++++++++++++++++++++++++++\n");
     
     }
     private void printBook(int bookID) {
