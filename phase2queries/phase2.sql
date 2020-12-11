@@ -228,6 +228,22 @@ where
       b_bookID = p_bookID AND
       p_bookID = r_bookID;
 
+-- insert INTO hasread(hr_name, hr_bookID, hr_myrating, hr_date)
+-- select a_name, b_bookID, fb_myrating, p_date
+-- from authors, authored, favebooks, books, publisher
+-- where b_bookID = ad_bookID AND
+--       ad_name = a_name AND
+--       b_bookID = fb_bookID AND
+--       b_bookID = p_bookID;
+
+-- delete from hasread
+-- where hr_bookID in (select b_bookID
+-- from authors, authored, favebooks, books
+-- where b_bookID = ad_bookID AND
+--       ad_name = a_name AND
+--       b_bookID = fb_bookID);
+
+
 -- 09/09/2020
 
 -- 051750037X

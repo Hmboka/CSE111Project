@@ -95,8 +95,8 @@ public class testingG {
 		System.out.println("1. Search books from general GoodReads Database?");		//done
 		System.out.println("2. Would you like to add, or delete from the general GoodReads Database?"); //done
 		System.out.println("3. Would you like to add a book from this general GoodReads Database to your Favorite Database?"); //done
-		System.out.println("4. Would you like to search books written by a certain auhtor?");		//done
-		System.out.println("5. Would you like to search books with a certain rating?");		//done
+		System.out.println("4. Would you like to search books written by a certain author?");		//done
+		System.out.println("5. Would you like to search books with a certain rating?");		
 		System.out.println("6. Search for a book that has a rating of at least (your input of rating value), written in (insert language), and has at least (insert number of pages) pages?"); //done
 		System.out.println("0. Back"); //done
         int selectInput = myScanner.nextInt();
@@ -176,18 +176,19 @@ public class testingG {
 		System.out.println("This is your Personal Library Tracker");		
 		System.out.println("What would you like to do?");	
 		System.out.println("1. Search books from your Personal Read Database?");	//done
-		System.out.println("2. Would you like to add a book from the general GoodReads Database to your Personal Read Database?"); //done
+		System.out.println("2. Would you like to add a book from the general GoodReads Database to your Favorite Books Database?"); //done
 		System.out.println("3. Search books from your Favorite Database?");  //done
-		System.out.println("4. Would you like to manually add, delete from your Favorite Database?"); //done
+		System.out.println("4. Would you like to manually add, delete from your Favorite  Books Database?"); //done
 		System.out.println("5. Would you like to search books based on Authors from Read Database?");	//done
-		System.out.println("6. Would you like to search books based on Authors from Favorite Database?");	//done
+		System.out.println("6. Would you like to search books based on Authors from Favorite Books Database?");	//done
 		System.out.println("7. Would you like to search books based on Rating from Read Database?"); 	//done
-		System.out.println("8. Would you like to search books based on Rating from Favorite Database?"); 	//done
+        System.out.println("8. Would you like to search books based on Rating from Favorite Database?"); 	//done
+        System.out.println("9. Would you like to display on Favorite Books?");
 		System.out.println("0. Back");
 		int selectInputp = myScanner.nextInt();
         try {
 
-            if(selectInputp < 0 || selectInputp > 8){
+            if(selectInputp < 0 || selectInputp > 9){
                 System.out.println("Invalid Entry. Please enter an option listed above.");
                 personal();
             }
@@ -247,7 +248,10 @@ public class testingG {
 
 			else if(selectInputp == 8){
 				personal8();
-			}
+            }
+            else if(selectInputp == 9){
+                personal9();
+            }
 			if(selectInputp == 0){
 				userIntro();
 			}
@@ -286,11 +290,14 @@ public class testingG {
                 String b_isbn = rs.getString("b_isbn");
 				System.out.println(b_bookID + "\t" + b_title + "\t" + b_langcode + "\t" + b_numpages + "\t" + b_isbn);
             }
-            if (count == 0){
-                System.out.println("No matching results found for this search");
-            }
+
 			rs.close();
-			stmt.close();
+            stmt.close();
+            if (count == 0){
+                System.out.println("\nNo matching results found for this search");
+                System.out.println();
+                userIntro();
+            }
 
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -304,7 +311,7 @@ public class testingG {
         int count = 0;
         //searches book based on title entered
 		// b_bookID, b_title, a_name, r_avgbookrating, b_langcode, b_numpages, b_isbn 
-		
+        System.out.println("Author" + "\t" + "Book ID" + "\t" + "Rating" + "\t" + "Date Added" + "\n");
         try {
              String sql  = "SELECT * " + "FROM hasread " + "where hr_name LIKE " + "'%" + inputBookNamep1 + "%'";
              ResultSet rs = c.prepareStatement(sql).executeQuery();
@@ -317,7 +324,7 @@ public class testingG {
                 System.out.println(hr_name + "\t" + hr_bookID + "\t" + hr_myrating + hr_date + "\n");
             }
             if (count == 0){
-                System.out.println("No matching results found for this search");
+                System.out.println("\nNo matching results found for this search\n");
             }
             rs.close();
   
@@ -432,7 +439,8 @@ public class testingG {
                 System.out.println(fb_title + "\t" + fb_bookID + "\t" + fb_myrating + "\n");
             }
             if (count == 0){
-                System.out.println("No matching results found for this search");
+                System.out.println("\nNo matching results found for this search\n");
+                personal();
             }
             rs.close();
   
@@ -457,7 +465,8 @@ public class testingG {
                 System.out.println(b_title);
             }
             if (count == 0){
-                System.out.println("No matching results found for this search");
+                System.out.println("\nNo matching results found for this search\n");
+                goodReads();
             }
             rs.close();
     
@@ -471,32 +480,15 @@ public class testingG {
     }
 
 	private int goodreads5() {
-        Scanner scanner = new Scanner(System.in);
         int count = 0;
-        System.out.println("Enter Rating");
-        double input5 = scanner.nextDouble();
-        while(input5 == 0){
-            System.out.println("Invalid entry. Try again.");
-            input5 = scanner.nextDouble();
-        }
-                     // check if book rating is not a double
-            if(input5 != (double)(input5)){
-                System.out.print("Sorry, you're entry is not a valid rating! \n Please enter a value between 0.1 to 5.0: ");
-                input5 = scanner.nextDouble();
-
-                //as long as user keeps putting in incorrect values, they will keep having to enter a rating
-                while(input5 < 0.1 || input5 > 5.0){
-                    System.out.print("Invalid rating! \n Please enter a value between 0.1 to 5.0: ");
-                    input5 = scanner.nextDouble();
-                    System.out.println();
-                }
-                
-            }
-		
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter Rating: ");
+		double input5 = scanner.nextDouble();
+		System.out.println("++++++++++++++++++++++++++++++++++");
 		
         try {
             Statement stmt = c.createStatement();
-			String query = "SELECT b_title, r_avgbookrating " + "FROM books, rating " + "where b_bookID IN (Select r_bookID From rating Where r_avgbookrating >= " + input5 + ") Group By b_title"; 
+			String query = "SELECT b_title, r_avgbookrating " + "FROM books, rating " + "where b_bookID IN(Select r_bookID From rating Where r_avgbookrating >= " + input5 + ") Group By b_title"; 
 
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
@@ -504,13 +496,13 @@ public class testingG {
 				String b_title = rs.getString("b_title");
                 double r_avgbookrating = rs.getDouble("r_avgbookrating");
 				System.out.println(b_title + "\t" + r_avgbookrating + "\t");
-            }
-            if (count == 0){
-                System.out.println("No matching results found for this search");
-            }
+			}
 			rs.close();
             stmt.close();
-            scanner.close();
+            if (count == 0){
+                System.out.println("\nNo matching results found for this search\n");
+                goodReads();
+            }
 
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -542,17 +534,22 @@ public class testingG {
             System.out.print("Invalid input. Please try again: ");
             inputp5 = myScanner.nextLine();
         }
-		System.out.println("++++++++++++++++++++++++++++++++++");
+        System.out.println("++++++++++++++++++++++++++++++++++");
+        System.out.println("Author" + "\t" + "Book ID" + "\t" + "Rating" + "\t" + "Date Added" + "\n");
         try {
-             String sql  = "SELECT hr_name from hasread where hr_bookID IN (Select ad_bookID From authored where ad_name LIKE " + "'%" + inputp5 + "%')";
+             String sql  = "SELECT * from hasread where hr_bookID IN (Select ad_bookID From authored where ad_name LIKE " + "'%" + inputp5 + "%')";
              ResultSet rs = c.prepareStatement(sql).executeQuery();
              while (rs.next()) {
                  count++;
-				String hr_name = rs.getString("hr_name");
-                System.out.println(hr_name + "\t");
+                String hr_name = rs.getString("hr_name");
+                String hr_bookID = rs.getString("hr_bookID");
+                String hr_myRating = rs.getString("hr_myRating");
+                String hr_date = rs.getString("hr_date");
+                System.out.println(hr_name + "\t" + hr_bookID + "\t" + hr_myRating+ "\t" + hr_date+ "\t");
             }
             if (count == 0){
-                System.out.println("No matching results found for this search");
+                System.out.println("\nNo matching results found for this search\n");
+                personal();
             }
             rs.close();
   
@@ -584,7 +581,8 @@ public class testingG {
                 System.out.println(fb_title + "\t");
             }
             if (count == 0){
-                System.out.println("No matching results found for this search");
+                System.out.println("\nNo matching results found for this search\n");
+                personal();
             }
             rs.close();
   
@@ -599,57 +597,48 @@ public class testingG {
 
 
 	private int goodreads6() {
-        Scanner scanner = new Scanner(System.in); 
         int count = 0;
-
-		System.out.println("Enter Rating ");
-        double inputp6_2 = scanner.nextDouble();
-             // check if book rating is not a double
-            if(inputp6_2 != (double)(inputp6_2)){
-                System.out.print("Sorry, you're entry is not a valid rating! \n Please enter a value between 0.1 to 5.0: ");
-                inputp6_2 = scanner.nextDouble();
-
-                //as long as user keeps putting in incorrect values, they will keep having to enter a rating
-                while(inputp6_2 < 0.1 || inputp6_2 > 5.0){
-                    System.out.print("Invalid rating! \n Please enter a value between 0.1 to 5.0: ");
-                    inputp6_2 = scanner.nextDouble();
-                    System.out.println();
-                }
-                
-            }
-		
-		System.out.println("Enter Langauge Code");
-        String input6_1 = scanner.nextLine();
-        while (input6_1.length() == 0){
-            System.out.print("Invalid input. Please try again: ");
-            input6_1 = scanner.nextLine();
+        System.out.print("Enter Rating: ");
+		myScanner.nextLine();
+        String input6_2 = myScanner.nextLine();
+        if(input6_2.length() == 0){
+            goodReads();
         }
-		System.out.println("Enter Number of Pages");
-        int input6_3 = scanner.nextInt();
-        while (input6_3 <= 0){
-            System.out.print("Invalid input. Please try again: ");
-            input6_3 = scanner.nextInt();
+
+
+		System.out.print("Enter Langauge Code: ");
+		//myScanner.nextLine();
+        String input6_1 = myScanner.nextLine();
+        if(input6_1.length() == 0){
+            goodReads();
         }
-        
+		System.out.print("Enter Number of Pages: ");
+		//myScanner.nextLine();
+        String input6_3 = myScanner.nextLine();
+        if(input6_3.length() == 0){
+            goodReads();
+        }
         try {
             Statement stmt = c.createStatement();
 
-			String query = "SELECT b_title, b_numpages, b_langcode " + "FROM books " + "where b_numpages >= " +  input6_3 + " AND b_langcode = '" + input6_1 + "' AND b_bookID IN(Select r_bookID From rating Where r_avgbookrating >= " + inputp6_2 + ")"; 
+			String query = "SELECT b_title, b_numpages, b_langcode " + "FROM books " + "where b_numpages >= " +  input6_3 + " AND b_langcode = '" + input6_1 + "' AND b_bookID IN(Select r_bookID From rating Where r_avgbookrating >= " + input6_2 + ")"; 
 
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
-                count++;
+               count++;
 				String b_title = rs.getString("b_title");
                 int b_numpages = rs.getInt("b_numpages");
 				String b_langcode = rs.getString("b_langcode");
 				System.out.println(b_title + "\t" + b_numpages + "\t" + b_langcode + "\t");
             }
-            if (count == 0){
-                System.out.println("No matching results found for this search");
-            }
+
 			rs.close();
             stmt.close();
-            scanner.close();
+            if (count == 0){
+                System.out.println("\nNo matching results found for this search\n");
+                goodReads();
+            }
+
 
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -659,40 +648,31 @@ public class testingG {
         return 0;
     }
 
-	private int personal7() {
-        Scanner scanner = new Scanner(System.in); 
+	private int personal8() {
         int count = 0;
-
-		System.out.println("Enter Rating ");
-        double inputp7 = scanner.nextDouble();
-             // check if book rating is not a double
-            if(inputp7 != (double)(inputp7)){
-                System.out.print("Sorry, you're entry is not a valid rating! \n Please enter a value between 0.1 to 5.0: ");
-                inputp7 = scanner.nextDouble();
-
-                //as long as user keeps putting in incorrect values, they will keep having to enter a rating
-                while(inputp7 < 0.1 || inputp7 > 5.0){
-                    System.out.print("Invalid rating! \n Please enter a value between 0.1 to 5.0: ");
-                    inputp7 = scanner.nextDouble();
-                    System.out.println();
-                }
-                
-            }
+        System.out.println("Enter Rating: ");
+		myScanner.nextLine();
+        String inputp7 = myScanner.nextLine();
+        if(inputp7.length() == 0){
+            System.out.println("Invalid entry. Please try again.");
+            personal();
+        }
         System.out.println("++++++++++++++++++++++++++++++++++");
-        System.out.println();
+        System.out.println("Book Title \n");
         try {
-             String sql  = "SELECT fb_title from favebooks where fb_myrating >= " + inputp7;
+            count++;
+             String sql  = "SELECT fb_title from favebooks where fb_myrating = " + inputp7;
              ResultSet rs = c.prepareStatement(sql).executeQuery();
              while (rs.next()) {
-                 count++;
 				String fb_title = rs.getString("fb_title");
                 System.out.println(fb_title + "\t");
             }
             if (count == 0){
-                System.out.println("No favebook with such rating found.");
+                System.out.println("\nNo favebook with such rating found.\n");
+                personal();
             }
             rs.close();
-            scanner.close();
+            
   
             
         } catch (Exception e) {
@@ -703,41 +683,36 @@ public class testingG {
         return 0;
 	}
 	
-	private int personal8() {
-        Scanner scanner = new Scanner(System.in); 
+	private int personal7() {
         int count = 0;
-		System.out.println("Enter Rating ");
-        double inputp8 = scanner.nextDouble();
-                    // check if book rating is not a double
-            if(inputp8 != (double)(inputp8)){
-                System.out.print("Sorry, you're entry is not a valid rating! \n Please enter a value between 0.1 to 5.0: ");
-                inputp8 = scanner.nextDouble();
-
-                //as long as user keeps putting in incorrect values, they will keep having to enter a rating
-                while(inputp8 < 0.1 || inputp8 > 5.0){
-                    System.out.print("Invalid rating! \n Please enter a value between 0.1 to 5.0: ");
-                    inputp8 = scanner.nextDouble();
-                    System.out.println();
-                }
-                
-            }
+        System.out.print("Enter Rating: ");
+		myScanner.nextLine();
+        String inputp8 = myScanner.nextLine();
+        if(inputp8.length() == 0){
+            System.out.println("Invalid entry. Please try again.");
+            personal();
+        }
+		System.out.println("++++++++++++++++++++++++++++++++++");
         System.out.println("++++++++++++++++++++++++++++++++++");
-        System.out.println();
+        System.out.println("Author" + "\t" + "Book ID" + "\t" + "Rating" + "\t" + "Date Added" + "\n");
         try {
             
-             String sql  = "SELECT hr_name from hasread where hr_myrating >= " + inputp8;
-             ResultSet rs = c.prepareStatement(sql).executeQuery();
-
-             while (rs.next()) {
+            String sql  = "SELECT * from hasread where hr_myrating = " + inputp8;
+            ResultSet rs = c.prepareStatement(sql).executeQuery();
+            while (rs.next()) {
                 count++;
-				String hr_name = rs.getString("hr_name");
-                System.out.println(hr_name + "\t");
-            }
+               String hr_name = rs.getString("hr_name");
+               String hr_bookID = rs.getString("hr_bookID");
+               String hr_myrating = rs.getString("hr_myrating");
+               double hr_date = rs.getDouble("hr_date");
+               System.out.println(hr_name + "\t" + hr_bookID + "\t" + hr_myrating + hr_date + "\n");
+           }
+          
             if (count == 0){
-                System.out.println("No favebook with such rating found.");
+                System.out.println("\nNo favebook with such rating found.\n");
             }
             rs.close();
-            scanner.close();
+           
   
             
         } catch (Exception e) {
@@ -780,6 +755,7 @@ public class testingG {
 
     
     private int insertNewBook() {
+        Scanner canner = new Scanner(System.in);
         String usrInput = "";
         String answer = "";
         int newID = createBookID();
@@ -1008,6 +984,7 @@ public class testingG {
         return newID;
     }
 
+
     private int deleteBook() {
         Scanner scanner = new Scanner(System.in);
         String usrInput = "";
@@ -1029,7 +1006,7 @@ public class testingG {
                 deleteBook();
             }
         }
-        else if(answer.equals("NO") == true){
+        if(input.equals("NO") == true){
             System.out.print("To search title and copy bookID of desired book, enter the book's title: ");
             title = scanner.nextLine();
             if(title.length() == 0){
@@ -1038,9 +1015,8 @@ public class testingG {
             } else {
                 goodReads1(title);
             }
-        } else{
+        } 
             
-        }
         System.out.print("Enter book ID: ");
         int bookID = scanner.nextInt();
         if(bookID != (int)(bookID)){
@@ -1069,6 +1045,9 @@ public class testingG {
                 deleteBook();
             }
         }
+        if(input.equals("NO") == true){
+            userIntro();
+        } 
 
         try {
             
@@ -1214,7 +1193,7 @@ public class testingG {
     }
 
     private int hrIDCount(int bookID) {
-        System.out.println("Checking to see if book already exists in favebooks...");
+        System.out.println("Checking to see if book already exists in hasread...");
         //user chooses lang code from list by entering a number
         int bCount = 0;
         
@@ -1243,7 +1222,7 @@ public class testingG {
         return bCount;
     }
     private int bookTitleCount(String title) {
-        System.out.println("Checking to see if  already exists...");
+        System.out.println("Checking to see if already exists...");
         //user chooses lang code from list by entering a number
         int bCount = 0;
         
@@ -1299,6 +1278,40 @@ public class testingG {
         System.out.println("++++++++++++++++++++++++++++++++++");
     
     }
+    private void personal9() {
+        
+        //user chooses lang code from list by entering a number
+        
+        System.out.println("Book ID" + "\t" + "Title" + "\t" + "My Rating");
+        try {
+
+            String sqlBID = "select * " +
+                            "from favebooks; ";
+
+        
+            ResultSet rsBID = c.prepareStatement(sqlBID).executeQuery();
+            
+            while (rsBID.next()) {
+                int fb_bookID = rsBID.getInt("fb_bookID");
+                String fb_title = rsBID.getString("fb_title");
+                String fb_myrating = rsBID.getString("fb_myrating");
+                System.out.println(fb_bookID + "\t" + fb_title + "\t" + fb_myrating);
+
+
+            }
+            
+            // STEP: Clean-up environment
+            rsBID.close();
+            //stmt.close();
+           // System.out.println("Successfully created book id: " + newID);
+          
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("++++++++++++++++++++++++++++++++++");
+    
+    }
     private void printBook(int bookID) {
         
         
@@ -1321,6 +1334,7 @@ public class testingG {
         }
         
     }
+
     private void end(){
 		myScanner.close();
 		System.exit(0);
