@@ -132,7 +132,7 @@ public class testingG {
 			}
 			
             if(selectInput == 3){
-                personal2();
+                personal2(0);
         
             }
 
@@ -200,7 +200,7 @@ public class testingG {
             }
             else if (selectInputp == 2){
                 System.out.println("++++++++++++++++++++++++++++++++++");
-                personal2();
+                personal2(0);
             }
 			
             // else if(selectInputp == 4){
@@ -330,34 +330,78 @@ public class testingG {
         return 0;
     }
 
-    private int personal2() { //to make this function more usable you can take in a decider string which decides how this functio
+    private int personal2(int tempID) { //to make this function more usable you can take in a decider string which decides how this functio
         //add a book from the general GoodReads Database to your Personal Read Database?
         Scanner scanner = new Scanner(System.in); 
-        System.out.print("Search title and copy bookID of desired book: ");
-        String title = scanner.nextLine();
-        // incase user doesnt enter anything
-        if(title.length() == 0){
-            System.out.println("Sorry, you're entry is not a valid title! Please try again.");
-            personal2();
-        }
-        //print books with title so user can copy book ID
-        goodReads1(title);
+        String title = "";
+        String answer = "";
+        int bookID = 0;
+        if (tempID == 0){
+            // Ask user if they want to search for the book ID
+            System.out.println("Do you know the book ID for the book you'd like to add? Enter 'Yes' or 'No'");
+            answer = scanner.nextLine();
+            // check if user enters invalid answer
 
-        //user pastes book ID in terminal
-        System.out.print("Enter book ID: ");
-        int bookID = scanner.nextInt();
+            String Str = new String(answer);
+            answer = Str.toUpperCase();
+            
+            if (answer.equals("YES") == false){
 
-        // if what they entered was not an integer
-        if(bookID != (int)(bookID)){
-            System.out.println("Sorry, you're entry is not a valid bookID! Please try again.");
-            personal2();
-        }
-        // if that book does not exist in the database
-        if (bookIDCount(bookID) == 0){
-            System.out.println("Sorry, book ID '" + bookID + "' does not exist. Please try again.");
-            personal2();
-        }
+                if(answer.equals("NO") == false){
+                    //System.out.println("failed this test");
+                    System.out.println("Sorry, " + answer +" is not a valid answer \n Please try again");
+                    personal2(0);
+                }
+            }
+            if(answer.equals("NO") == true){
+                System.out.print("To search title and copy bookID of desired book, enter the book's title: ");
+                title = scanner.nextLine();
+                if(title.length() == 0){
+                    System.out.print("Sorry, you're entry is not a valid title! Please try again.");
+                    personal2(0);
+                } else {
+                    goodReads1(title);
+                }
+            } else{
+                
+            }
 
+            //user pastes book ID in terminal
+            System.out.print("Enter book ID: ");
+            bookID = scanner.nextInt();
+            
+            // if what they entered was not an integer
+            if(bookID != (int)(bookID)){
+                System.out.print("Sorry, you're entry is not a valid bookID! Please try again. \n");
+                personal2(0);
+            }
+            // if that book does not exist in the database
+            if (bookIDCount(bookID) == 0){
+                System.out.print("Sorry, book ID '" + bookID + "' does not exist in database. Please try again. \n");
+                personal2(0);
+            }
+            // if that book already exists in the user's favebooks'
+            if (fbIDCount(bookID) == 1){
+                System.out.print("Book ID '" + bookID + "' already exists in your favebooks! \n");
+                personal();
+            }
+        } else{
+            bookID = tempID;
+            if(bookID != (int)(bookID)){
+                System.out.print("Sorry, you're entry is not a valid bookID! Please try again. \n");
+                personal2(0);
+            }
+            // if that book does not exist in the database
+            if (bookIDCount(bookID) == 0){
+                System.out.print("Sorry, book ID '" + bookID + "' does not exist in database. Please try again. \n");
+                personal2(0);
+            }
+            // if that book already exists in the user's favebooks'
+            if (fbIDCount(bookID) == 1){
+                System.out.print("Book ID '" + bookID + "' already exists in your favebooks! \n");
+                personal();
+            }
+        }
         try {
 
             Statement stmt = c.createStatement();
@@ -370,21 +414,22 @@ public class testingG {
 
             // collect users rating of book
             System.out.print("Enter your book rating for ''" + b_title + "': ");
-            double fb_rating = scanner.nextDouble();
+            double fb_rating = myScanner.nextDouble();
             
             // check if book rating is not a double
             if(fb_rating != (double)(fb_rating)){
                 System.out.print("Sorry, you're entry is not a valid rating! \n Please enter a value between 0.1 to 5.0: ");
-                fb_rating = scanner.nextDouble();
+                fb_rating = myScanner.nextDouble();
 
                 //as long as user keeps putting in incorrect values, they will keep having to enter a rating
                 while(fb_rating < 0.1 || fb_rating > 5.0){
                     System.out.print("Invalid rating! \n Please enter a value between 0.1 to 5.0: ");
-                    fb_rating = scanner.nextDouble();
+                    fb_rating = myScanner.nextDouble();
+                    System.out.println();
                 }
                 
             }
-
+            System.out.println("made it here");
             // insert data into favebooks
             String sql2 = "INSERT INTO favebooks " +
                           "VALUES(?,?,?); ";
@@ -396,16 +441,17 @@ public class testingG {
 
             stmt2.executeUpdate();
 
-            
+
             // STEP: Commit
             c.commit();
 
             // STEP: Clean up Environment
 			rs.close();
 			stmt.close();
-			stmt2.close();
+            stmt2.close();
+            scanner.close();
   
-            
+            System.out.println("Successfully added '" + b_title + "' to your favebooks library.");
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
@@ -523,8 +569,8 @@ public class testingG {
         int tempID = 0;
         try {
 
-            insertNewBook();
-            personal2();
+            tempID = insertNewBook();
+            personal2(tempID);
             
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -1351,7 +1397,7 @@ public class testingG {
         
         sj.openConnection("data/grapp.sqlite");
         sj.userIntro();
-        // sj.closeConnection();
+        sj.closeConnection();
         //sj.createBookID();
         //sj.closeConnection();
     }
