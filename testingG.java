@@ -186,12 +186,14 @@ public class testingG {
         System.out.println("9. Would you like to display Favorite Books?");
         System.out.println("10. Would you add a book to your Read Database?");
         System.out.println("11. Would you like to display your Read Database?");
+        System.out.println("12. Would you like to add a favorite author to Favorite Authors Database?");
+        System.out.println("13. Would you like to display your Favorite Authors Database?");
 
 		System.out.println("0. Back");
 		int selectInputp = myScanner.nextInt();
         try {
 
-            if(selectInputp < 0 || selectInputp > 11){
+            if(selectInputp < 0 || selectInputp > 13){
                 System.out.println("Invalid Entry. Please enter an option listed above.");
                 personal();
             }
@@ -260,6 +262,12 @@ public class testingG {
             }
             else if (selectInputp == 11){
                 personal11();
+            }
+            else if (selectInputp == 12){
+                personal12();
+            }
+            else if (selectInputp == 13){
+                personal13();
             }
 			if(selectInputp == 0){
 				userIntro();
@@ -1281,7 +1289,73 @@ public class testingG {
         System.out.println("++++++++++++++++++++++++++++++++++");
         return 0;
     }
+    private int personal12() {
+        String name = "";
+        System.out.print("Enter author: ");
+        myScanner.nextLine();
+        String author = myScanner.nextLine();
+        // incase user doesnt enter anything
+        if(author.length() == 0){
+            System.out.println("Sorry, you're entry is not a valid title! Please try again.");
+            personal();
+        }
+        if (authorCount(author) == 0){
+            System.out.println("Sorry, that author doesnt exist! Please try again.");
+            personal();
+        }
+        
 
+        //user pastes book ID in terminal
+
+
+        try {
+
+
+            // collect users rating of book
+            System.out.print("Enter your book rating for author:" );
+            double fb_rating = myScanner.nextDouble();
+            
+            //check if book rating is not a double
+            if(fb_rating != (double)(fb_rating)){
+                System.out.print("Sorry, you're entry is not a valid rating! \n Please enter a value between 0.1 to 5.0: ");
+                fb_rating = myScanner.nextDouble();
+
+                //as long as user keeps putting in incorrect values, they will keep having to enter a rating
+                while(fb_rating < 0.1 || fb_rating > 5.0){
+                    System.out.print("Invalid rating! \n Please enter a value between 0.1 to 5.0: ");
+                    fb_rating = myScanner.nextDouble();
+                }
+                
+            }
+
+
+            // insert data into favebooks
+            String sql2 = "INSERT INTO faveauthors " +
+                          "VALUES(?,?); ";
+
+            PreparedStatement stmt2 = c.prepareStatement(sql2);
+            stmt2.setString(1, author);
+            stmt2.setDouble(2, fb_rating);
+
+            stmt2.executeUpdate();
+
+            
+            // STEP: Commit
+            c.commit();
+
+            // STEP: Clean up Environment
+
+            stmt2.close();
+            System.out.print("Successfully added author to Favorite Authors. \n");
+  
+            
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("++++++++++++++++++++++++++++++++++");
+        return 0;
+    }
 
 
     private int authorCount(String inputAuthName) {
@@ -1555,7 +1629,40 @@ public class testingG {
     private void end(){
 		myScanner.close();
 		System.exit(0);
-	}
+    }
+    private void personal13() {
+        
+        //user chooses lang code from list by entering a number
+        
+        System.out.println("Author" + "\t" + "My Rating");
+        try {
+
+            String sqlBID = "select * " +
+                            "from faveauthors; ";
+
+        
+            ResultSet rsBID = c.prepareStatement(sqlBID).executeQuery();
+            
+            while (rsBID.next()) {
+                String fb_title = rsBID.getString("fa_name");
+                String fb_myrating = rsBID.getString("fa_myrating");
+                System.out.println(fb_title + "\t" + fb_myrating);
+
+
+            }
+            
+            // STEP: Clean-up environment
+            rsBID.close();
+            //stmt.close();
+           // System.out.println("Successfully created book id: " + newID);
+          
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        System.out.println("++++++++++++++++++++++++++++++++++");
+    
+    }
     private void closeConnection() {
         if (true == isConnected) {
             System.out.println("++++++++++++++++++++++++++++++++++");

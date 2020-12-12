@@ -76,6 +76,11 @@ where a_name = 'lobsi';
 
 select count(*) from favebooks where fb_bookID = 45642;
 
+delete from favebooks where fb_bookID = 25148;
+
+Select b_title, a_name, r_avgbookrating
+from books, authored, authors, rating
+where b_bookID = ad_bookID AND ad_name = a_name AND b_bookID = r_bookID and r_avgbookrating = 2.0;
 /*
 
 Delete from books
